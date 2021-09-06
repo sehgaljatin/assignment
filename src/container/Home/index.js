@@ -69,9 +69,11 @@ function Home() {
           ?.split(" ")
           .map((b) => b && b.toLowerCase().trim())
           .filter((b) => b);
+
       let matchingWords = searchWords.filter((word) =>
-        dataWords.includes(word)
+        dataWords.find((a) => a.includes(word))
       );
+
       return matchingWords.length;
     });
   };
@@ -83,7 +85,6 @@ function Home() {
         productsData,
         "productName"
       );
-      console.log("searchResults", searchResults);
       return searchResults;
     }
 
