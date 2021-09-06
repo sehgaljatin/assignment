@@ -31,7 +31,9 @@ function Home() {
   }, [dispatch]);
 
   useEffect(() => {
-    filteredData();
+    if (selectedSearch.length !== 0) {
+      filteredData();
+    }
   }, [selectedSearch]);
 
   const brandFilter = (event) => {
