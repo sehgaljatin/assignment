@@ -16,7 +16,7 @@ const Products = (props) => {
               <span className="mrp">Rs.{props.mrp}</span>
               <span className="discount">{props.dis}</span>
             </div>
-            <button className="btn btn-primary">Add to Cart</button>
+            <button className="btn btn-primary cart_btn">Add to Cart</button>
           </div>
         </div>
       </div>

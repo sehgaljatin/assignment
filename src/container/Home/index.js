@@ -156,29 +156,39 @@ function Home() {
             </div>
             <div className="col-md-12 border-bottom">
               <h6 className="p-2 text-uppercase font-weight-bold">Brand</h6>
-              {brandData.map((val) => {
-                return (
-                  <Checkbox
-                    value={val}
-                    label={val}
-                    key={val}
-                    onClick={brandFilter}
-                  />
-                );
-              })}
+              <div className="hide_scroll_main">
+                <div className="scroll_filters">
+                  {brandData.map((val) => {
+                    return (
+                      <Checkbox
+                        value={val}
+                        label={val}
+                        key={val}
+                        onClick={brandFilter}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
             </div>
             <div className="col-md-12 border-bottom">
-              <h6 className="p-2 text-uppercase font-weight-bold">Category</h6>
-              {categoryData.map((val) => {
-                return (
-                  <Checkbox
-                    value={val}
-                    label={val}
-                    key={val}
-                    onClick={catFilter}
-                  />
-                );
-              })}
+              <h6 className="p-2 text-uppercase font-weight-bold">
+                Categories
+              </h6>
+              <div className="hide_scroll_main">
+                <div className="scroll_filters">
+                  {categoryData.map((val) => {
+                    return (
+                      <Checkbox
+                        value={val}
+                        label={val}
+                        key={val}
+                        onClick={catFilter}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
             </div>
           </div>
 

@@ -48,3 +48,26 @@
   box-shadow: 1px 1px 6px grey;
 }
 
+.scroll_filters {
+  height: 300px;
+  width: 105%;
+  overflow-y: scroll;
+  margin-bottom: 20px;
+  display: block;
+  padding-right: 15px;
+}
+
+.hide_scroll_main {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.cart_btn {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+}
+.margin_right_15 {
+  margin-right: 98px;
+}

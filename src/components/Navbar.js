@@ -26,7 +26,7 @@ const Navbar = (props) => {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <ul className="navbar-nav margin_right_15">
               <li className="nav-item">
                 <a className="nav-link active" aria-current="page" href="/">
                   MEN
@@ -57,28 +57,10 @@ const Navbar = (props) => {
               <input
                 className="form-control search ml-5"
                 type="search"
-                placeholder="Search for products,brands and more"
+                placeholder="Search Products"
                 aria-label="Search"
                 onChange={props.onChange}
               />
-            </div>
-            <div>
-              <div className="profilelogo">
-                <i className="fa fa-user" aria-hidden="true"></i>
-              </div>
-              <span className="profilename">Profile</span>
-            </div>
-            <div>
-              <div className="wishlistlogo">
-                <i className="fa fa-heart" aria-hidden="true"></i>
-              </div>
-              <span className="wishlistname">Wishlist</span>
-            </div>
-            <div>
-              <div className="baglogo">
-                <i className="fa fa-shopping-bag" aria-hidden="true"></i>
-              </div>
-              <span className="bagname">Cart</span>
             </div>
           </div>
         </div>
