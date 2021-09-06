@@ -8,27 +8,31 @@ import Checkbox from "../../components/Checkbox";
 import Products from "../../components/Products";
 import "../../App.css";
 function Home() {
-    const [selectedGender, setSelectedGender] = useState([]);
-    const [selectedBrand, setSelectedBrand] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState([]);
-    const [selectedSearch, setSelectedSearch] = useState("");
+  const [selectedGender, setSelectedGender] = useState([]);
+  const [selectedBrand, setSelectedBrand] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState([]);
+  const [selectedSearch, setSelectedSearch] = useState("");
 
+  const productsData = useSelector((state) => state?.reducerProducts?.data);
 
-    const productsData = useSelector((state) => state?.reducerProducts?.data);
+  const genderData = useSelector((state) => state?.reducerProducts?.genderData);
+  const brandData = useSelector((state) => state?.reducerProducts?.brandData);
+  const categoryData = useSelector(
+    (state) => state?.reducerProducts?.categoryData
+  );
 
-    
-    const genderData = useSelector((state) => state?.reducerProducts?.genderData);
-    const brandData = useSelector((state) => state?.reducerProducts?.brandData);
-    const categoryData = useSelector((state) => state?.reducerProducts?.categoryData);
+  const loading = useSelector((state) => state.reducerProducts.loading);
+  const error = useSelector((state) => state.reducerProducts.error);
 
-    const loading = useSelector((state) => state.reducerProducts.loading);
-    const error = useSelector((state) => state.reducerProducts.error);
-    //   const [selectedSearch, setSelectedSearch] = useState("");
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getProductsData());
   }, [dispatch]);
+
+  useEffect(() => {
+    filteredData();
+  }, [selectedSearch]);
 
   const brandFilter = (event) => {
     if (event.target.checked) {
@@ -50,45 +54,52 @@ function Home() {
     }
   };
 
-//   const filteredData = () => {
-//       if(selectedGender.length === 0 &&
-//               selectedBrand.length === 0 &&
-//               selectedCategory.length === 0
-//       ){
-//         return productsData;
-//       }
-      
-//   }
-
-const searchProducts = () => {
-   
-    let { productList } = this.props;  
-    console.log("search", this.state.search);
-    let filteredProductList = productList.filter((product) => product.product.toLowerCase().includes(this.state.search.toLowerCase()));
-    this.setState({ loading:false, productList: filteredProductList });
-
-    return productsData.filter((product) => product.product.toLowerCase().includes(selectedSearch.toLowerCase()))
-}
-
+  const searchProducts = (searchQuery, array, objectKey = null) => {
+    return array.filter((d) => {
+      let data = objectKey ? d[objectKey] : d; //Incase If It's Array Of Objects.
+      let dataWords =
+        typeof data == "string" &&
+        data
+          ?.split(" ")
+          ?.map((b) => b && b.toLowerCase().trim())
+          .filter((b) => b);
+      let searchWords =
+        typeof searchQuery == "string" &&
+        searchQuery
+          ?.split(" ")
+          .map((b) => b && b.toLowerCase().trim())
+          .filter((b) => b);
+      let matchingWords = searchWords.filter((word) =>
+        dataWords.includes(word)
+      );
+      return matchingWords.length;
+    });
+  };
 
   const filteredData = () => {
+    if (selectedSearch.length !== 0) {
+      let searchResults = searchProducts(
+        selectedSearch,
+        productsData,
+        "productName"
+      );
+      console.log("searchResults", searchResults);
+      return searchResults;
+    }
+
     if (
       selectedGender.length === 0 &&
       selectedBrand.length === 0 &&
       selectedCategory.length === 0 &&
-      selectedSearch === ""
+      selectedSearch.length === 0
     ) {
       return productsData;
-    }
-     else if (selectedGender.length !== 0) {
-      if (
-        selectedBrand.length !== 0 &&
-        selectedCategory.length !== 0
-      ) {
+    } else if (selectedGender.length !== 0) {
+      if (selectedBrand.length !== 0 && selectedCategory.length !== 0) {
         return productsData
           .filter((product) => selectedGender.includes(product.gender))
           .filter((product) => selectedBrand.includes(product.brand))
-          .filter((product) => selectedCategory.includes(product.category))          
+          .filter((product) => selectedCategory.includes(product.category));
       } else if (selectedGender.length !== 0 && selectedBrand.length !== 0) {
         return productsData
           .filter((product) => selectedGender.includes(product.gender))
@@ -114,60 +125,64 @@ const searchProducts = () => {
       return productsData.filter((product) =>
         selectedCategory.includes(product.category)
       );
-    } 
-    else if (selectedSearch !== "") {
-      return productsData.filter((product) => product.product.toLowerCase().includes(selectedSearch.toLowerCase()))
     }
-
-
-    
-
-    // else if (selectedSearch !== "") {
-    //   return products.filter((product) => selectedSearch.toLowerCase().split(" ")
-    //       .forEach((item) => {
-    //         product = product.product.toLowerCase()
-    //         console.log(item)
-    //         console.log(product)
-    //         console.log(product.includes(item))
-
-    //         return product.includes(item)
-    //       }));
-    // }
-
-
   };
   return (
     <>
       {loading && <p>Loading...</p>}
       {error && !loading && <p>{error}</p>}
-      <Navbar onChange={(event) => {setSelectedSearch(event.target.value)}} />
+      <Navbar
+        onChange={(event) => {
+          setSelectedSearch(event.target.value);
+        }}
+      />
       <div className="container-fluid">
         <div className="row pt-4">
           <div className="col-md-3 border px-4">
             <div className="col-md-12 border-bottom">
               <h6 className="p-2 text-uppercase font-weight-bold">Gender</h6>
               {genderData.map((val) => {
-                return <Radio value={val} key={val} label={val} onClick={(event) => {setSelectedGender(event.target.value)}} />;
+                return (
+                  <Radio
+                    value={val}
+                    key={val}
+                    label={val}
+                    onClick={(event) => {
+                      setSelectedGender(event.target.value);
+                    }}
+                  />
+                );
               })}
             </div>
             <div className="col-md-12 border-bottom">
               <h6 className="p-2 text-uppercase font-weight-bold">Brand</h6>
               {brandData.map((val) => {
                 return (
-                  <Checkbox value={val} label={val} key={val} onClick={brandFilter} />
+                  <Checkbox
+                    value={val}
+                    label={val}
+                    key={val}
+                    onClick={brandFilter}
+                  />
                 );
               })}
             </div>
             <div className="col-md-12 border-bottom">
               <h6 className="p-2 text-uppercase font-weight-bold">Category</h6>
               {categoryData.map((val) => {
-                return <Checkbox value={val} label={val} key={val} onClick={catFilter} />;
+                return (
+                  <Checkbox
+                    value={val}
+                    label={val}
+                    key={val}
+                    onClick={catFilter}
+                  />
+                );
               })}
             </div>
           </div>
 
           <div className="col-md-9 border">
-
             {filteredData().map((val) => {
               return (
                 <Products
@@ -184,7 +199,7 @@ const searchProducts = () => {
             })}
           </div>
         </div>
-      </div>      
+      </div>
     </>
   );
 }
