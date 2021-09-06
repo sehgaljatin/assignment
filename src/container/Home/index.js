@@ -14,7 +14,6 @@ function Home() {
   const [selectedSearch, setSelectedSearch] = useState("");
 
   const productsData = useSelector((state) => state?.reducerProducts?.data);
-
   const genderData = useSelector((state) => state?.reducerProducts?.genderData);
   const brandData = useSelector((state) => state?.reducerProducts?.brandData);
   const categoryData = useSelector(
@@ -30,13 +29,8 @@ function Home() {
     dispatch(getProductsData());
   }, [dispatch]);
 
-  useEffect(() => {
-    if (selectedSearch.length !== 0) {
-      filteredData();
-    }
-  }, [selectedSearch]);
-
   const brandFilter = (event) => {
+    setSelectedSearch("");
     if (event.target.checked) {
       setSelectedBrand([...selectedBrand, event.target.value]);
     } else {
@@ -47,6 +41,7 @@ function Home() {
   };
 
   const catFilter = (event) => {
+    setSelectedSearch("");
     if (event.target.checked) {
       setSelectedCategory([...selectedCategory, event.target.value]);
     } else {
@@ -137,6 +132,7 @@ function Home() {
       <Navbar
         onChange={(event) => {
           setSelectedSearch(event.target.value);
+          filteredData();
         }}
       />
       <div className="container-fluid">
@@ -151,6 +147,7 @@ function Home() {
                     key={val}
                     label={val}
                     onClick={(event) => {
+                      setSelectedSearch("");
                       setSelectedGender(event.target.value);
                     }}
                   />
