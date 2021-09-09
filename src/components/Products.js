@@ -6,7 +6,7 @@ const Products = (props) => {
     <>
       <div className="cards">
         <div className="card" style={{ width: "235px" }}>
-          <img src={props.img} className="card-img-top" alt="mypic" />
+          <img src={props.img} className="card-img-top" alt={props.product} />
           <div className="card-body">
             <h6 className="card-title">{props.product}</h6>
             <div className="card-text">
@@ -23,5 +23,4 @@ const Products = (props) => {
     </>
   );
 };
-
 export default Products;

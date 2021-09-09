@@ -76,6 +76,37 @@ function Home() {
   };
 
   const filteredData = () => {
+    // return productsData.map((product) => {
+    //   console.log("prodcut", selectedGender, product, );
+    //   if (
+    //     selectedGender.length &&
+    //     Object.values(product).includes(selectedGender)
+    //   ) {
+    //     return product;
+    //   } else {
+    //     return product;
+    //   }
+    // });
+
+    // var abc = productsData.map((product) => {
+    //   if (selectedBrand.length && selectedBrand.includes(product.brand)) {
+    //     return product;
+    //   }
+
+    //   if (
+    //     selectedCategory.length &&
+    //     selectedCategory.includes(product.category)
+    //   ) {
+    //     return product;
+    //   }
+
+    //   if (selectedGender.length && selectedGender.includes(product.gender)) {
+    //     return product;
+    //   }
+    // });
+
+    // console.log(abc);
+
     if (selectedSearch.length !== 0) {
       let searchResults = searchProducts(
         selectedSearch,
@@ -85,24 +116,17 @@ function Home() {
       return searchResults;
     }
 
-    if (
-      selectedGender.length === 0 &&
-      selectedBrand.length === 0 &&
-      selectedCategory.length === 0 &&
-      selectedSearch.length === 0
-    ) {
-      return productsData;
-    } else if (selectedGender.length !== 0) {
-      if (selectedBrand.length !== 0 && selectedCategory.length !== 0) {
+    if (selectedGender.length) {
+      if (selectedBrand.length && selectedCategory.length) {
         return productsData
           .filter((product) => selectedGender.includes(product.gender))
           .filter((product) => selectedBrand.includes(product.brand))
           .filter((product) => selectedCategory.includes(product.category));
-      } else if (selectedGender.length !== 0 && selectedBrand.length !== 0) {
+      } else if (selectedBrand.length) {
         return productsData
           .filter((product) => selectedGender.includes(product.gender))
           .filter((product) => selectedBrand.includes(product.brand));
-      } else if (selectedCategory.length !== 0 && selectedGender.length !== 0) {
+      } else if (selectedCategory.length) {
         return productsData
           .filter((product) => selectedGender.includes(product.gender))
           .filter((product) => selectedCategory.includes(product.category));
@@ -110,8 +134,8 @@ function Home() {
       return productsData.filter((product) =>
         selectedGender.includes(product.gender)
       );
-    } else if (selectedBrand.length !== 0) {
-      if (selectedBrand.length !== 0 && selectedCategory.length !== 0) {
+    } else if (selectedBrand.length) {
+      if (selectedCategory.length !== 0) {
         return productsData
           .filter((product) => selectedBrand.includes(product.brand))
           .filter((product) => selectedCategory.includes(product.category));
@@ -119,11 +143,12 @@ function Home() {
       return productsData.filter((product) =>
         selectedBrand.includes(product.brand)
       );
-    } else if (selectedCategory.length !== 0) {
+    } else if (selectedCategory.length) {
       return productsData.filter((product) =>
         selectedCategory.includes(product.category)
       );
     }
+    return productsData;
   };
   return (
     <>
@@ -194,6 +219,7 @@ function Home() {
 
           <div className="col-md-9 border">
             {filteredData().map((val) => {
+              console.log(val);
               return (
                 <Products
                   img={val.searchImage}
